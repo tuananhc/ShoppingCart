@@ -8,10 +8,10 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path='/src/screens/main/main'>
+        <Route exact path='/'>
           <Main />
         </Route>
-        <Route exact path='/src/screens/checkout/checkout'>
+        <Route path='/checkout'>
           <Checkout />
         </Route>
       </Switch>
