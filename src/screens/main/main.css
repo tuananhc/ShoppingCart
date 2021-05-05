@@ -61,7 +61,7 @@
 .number {
   position: relative;
   right: -15px;
-  top: -20px;
+  top: -15px;
   background-color: blue;
   border-radius: 100%;
   width: 25px;
@@ -72,6 +72,6 @@
 }
 
 .logo {
-  animation: App-logo-spin 6s infinite;
+  animation: App-logo-spin 20s infinite;
   height: 40px;
 }

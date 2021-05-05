@@ -1,6 +1,9 @@
-.body { 
-  display: flex;
-  flex: 1;
+.checkoutBody { 
   justify-content: center;
   align-items: center;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
 }
