@@ -5,6 +5,10 @@ import './main.css';
 import ReactLogo from '../../logo.svg';
 import Cart from '../../assets/noun_cart_3888513.png';
 import { Link } from 'react-router-dom';
+import data from '../../data.json'
+
+console.log(JSON.stringify(data))
+
 function App() {
 
   const [cart, setCart] = useState([]);
@@ -13,10 +17,10 @@ function App() {
   const [itemCount, setItemCount] = useState(1)
   const [totalPrice, setTotalPrice] = useState(0)
   const [size, setSize] = useState(window.innerWidth)
-
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState(0)
   const [color, setColor] = useState('')
+  const [category, setCategory] = useState('')
 
   const handleResize = () => {
     setSize(window.innerWidth)
@@ -46,8 +50,8 @@ function App() {
     content: {
       position: 'absolute',
       top: '5%',
-      right: 10,
-      left: '60%',
+      right: size,
+      left: size * 0.8,
       bottom: '35%',
       border: '1px solid #ccc',
       background: '#fff',
@@ -59,68 +63,21 @@ function App() {
       paddingBottom: '30px',
       width: 200,
       display: 'flex',
-      maxHeight: 400
     }
   }
-  const list = [
-    {
-      color: 'White',
-      price: 10,
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    },
-    {
-      color: 'Red',
-      price: 15.5,
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    },
-    {
-      color: 'Blue',
-      price: 20,
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    },
-    {
-      color: 'Aqua',
-      price: 17.5,
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    },
-    {
-      color: 'Yellow',
-      price: 12,
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    },
-    {
-      color: 'Chartreuse',
-      price: 20,
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    },
-    {
-      color: 'Magenta',
-      price: 10,
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    },
-    {
-      color: 'Brown',
-      price: 15.5,
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    },
-    {
-      color: 'Moccasin',
-      price: 20,
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    },
-  ]
+  const list = data.items
 
   function renderItem(item) {
     return (
       <div style={{ margin: '10px 20px 10px 20px' }}>
         <div style={{ height: 100, width: Math.min(0.4 * size, 300), borderRadius: 20, backgroundColor: item.color, border: '1px solid black', }} />
         <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: 10, marginBottom: 10 }}>
-          <span style={{ fontSize: 20, color: 'gray' }}>Primary color</span>
+          <text style={{ fontSize: 15, color: 'gray' }}>{item.category}</text>
         </div>
         <div style={{ display: 'flex', flex: 0.2, flexDirection: 'row' }}>
           <div style={{ display: 'flex', flex: 0.5, alignItems: 'flex-start', flexDirection: 'column', }}>
-            <span style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 5, color: 'black' }}>{item.color}</span>
-            <span style={{ fontSize: 15, margin: 0, color: 'black' }}>${item.price.toFixed(2)}</span>
+            <text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 5, color: 'black' }}>{item.color}</text>
+            <text style={{ fontSize: 15, margin: 0, color: 'black' }}>${item.price.toFixed(2)}</text>
           </div>
           <div style={{ display: 'flex', flex: 0.5, justifyContent: 'flex-end', paddingTop: 10 }}>
             <button
@@ -130,6 +87,7 @@ function App() {
                 setColor(item.color)
                 setDescription(item.description)
                 setPrice(item.price)
+                setCategory(item.category)
               }}>DETAILS</button>
           </div>
         </div>
@@ -144,7 +102,7 @@ function App() {
           <div style={{ backgroundColor: 'black', padding: "4px 7px 6px 8px", borderRadius: 3, cursor: 'pointer' }}
             onClick={() => {
               setTotalPrice(totalPrice - item.price * item.count)
-              setCart(cart.filter(citem => citem != item))
+              setCart(cart.filter(citem => citem !== item))
             }}>
             <text style={{ color: 'white' }}>x</text>
           </div>
@@ -166,14 +124,16 @@ function App() {
     return (
       <nav>
         <div className="div-header">
-          <div style={{ display: 'flex', flex: 0.1, }}>
+          <div style={{ display: 'flex', flex: 0.1, }} onClick={() => alert(JSON.stringify(cart))}>
             <img src={ReactLogo} className="logo" />
           </div>
           <div style={{ display: 'flex', flex: 0.8, justifyContent: 'center' }}>
             <p>SHOPPING PAGE</p>
           </div>
           {(cart.length) ? (
-            <div className='cart' onClick={() => setCartModalVisible(!cartModalVisible)}>
+            <div className='cart' style={{ display: 'flex', flex: 0.1, justifyContent: 'flex-end' }}
+              onClick={() => setCartModalVisible(!cartModalVisible)}
+            >
               <div className='number'>
                 <p style={{ fontSize: 15, color: 'white' }}>{cart.length}</p>
               </div>
@@ -188,7 +148,7 @@ function App() {
   }
 
   return (
-    <div >
+    <div>
       <Header />
       <Modal
         isOpen={itemModalVisible}
@@ -198,15 +158,16 @@ function App() {
           setItemCount(1)
         }}
       >
-        <div style={{ display: 'flex', flex: 1, justifyContent: 'center', flexDirection: 'row', padding: 10 }}>
-          <div style={{ paddingRight: 20, }}>
+        <div style={{ display: 'flex', flex: 1, justifyContent: 'center', flexDirection: 'row', padding: 10, }}>
+          <div style={{ padding: '0 20px 20px 0', alignItems: 'center', display: 'flex' }}>
             <div style={{ backgroundColor: color, height: 150, width: 150, border: '1px solid black' }} />
           </div>
-          <div>
-            <p style={{ fontWeight: 'bold', marginTop: 0 }}>{color}</p>
+          <div style={{ position: 'relative', top: -10, }}>
+            <text style={{ fontSize: 12, color: 'gray' }}>{category}</text>
+            <p style={{ fontWeight: 'bold', marginTop: 10, fontSize: 20 }}>{color}</p>
             <p style={{ fontSize: 12 }}>{description}</p>
 
-            <div style={{ display: 'flex', flex: 1, flexDirection: 'row' }}>
+            <div style={{ display: 'flex', flex: 1, flexDirection: 'row', marginTop: 30 }}>
               <div style={{ display: 'flex', flex: 0.5, justifyContent: 'flex-start' }}>
                 <p style={{ fontWeight: 'bold', marginTop: 10 }}>${price.toFixed(2)}</p>
               </div>
@@ -227,25 +188,24 @@ function App() {
                     &#9661;
                   </button>
                 </div>
-
                 <button
-                  style={{ width: 100, backgroundColor: '#aa2ee6', borderWidth: 1, borderColor: 'black', color: 'white', height: 40 }}
+                  style={{ width: 100, backgroundColor: '#aa2ee6', borderWidth: 1, borderColor: 'black', color: 'white', height: 40, position: 'relative' }}
                   onClick={() => {
                     setItemModalVisible(!itemModalVisible)
-                    if (cart.forEach(item => {
-                      if (item.color === color) {
-                        return true
-                      } else {
-                        return false
-                      }
-                    })) {
-                      alert("dit me may")
-                    }
                     if (itemCount > 0) {
+                      var dmm = 0;
+                      for (var i = 0; i < cart.length; i++) {
+                        console.log(JSON.stringify(cart[i]))
+                        if (cart[i].color === color) {
+                          dmm = cart[i].count
+                          setCart(cart.filter(citem => citem !== cart[i]))
+                          break
+                        }
+                      }
                       setCart(cart => [...cart, {
                         color: color,
                         price: price,
-                        count: itemCount,
+                        count: itemCount + dmm,
                       }])
                       setTotalPrice(totalPrice + itemCount * price)
                     }
@@ -286,7 +246,7 @@ function App() {
       </Modal>
       <body className="body">
         <div>
-          <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
             {list.map((item) => (
               renderItem(item)
             ))}
